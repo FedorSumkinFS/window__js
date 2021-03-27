@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.sidebar {
+    width: 60px;
+    height: 100vh;
+    background: #191b22;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.fas {
+    font-size: 50px;
+    opacity: .9;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.main {
+    position: relative;
+    width: 100%;
+}
+
+.main__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.main__content_animation {
+    transform: scale(0.8);
+    background: rgb(163, 177, 210);
+}
+
+/*# sourceMappingURL=/style.e308ff8e.css.map */
