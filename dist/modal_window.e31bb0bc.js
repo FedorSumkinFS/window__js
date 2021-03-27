@@ -134,7 +134,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
 var getTemplate = function getTemplate() {
-  return "\n    <div class=\"select__input\" data-type=\"input\">\n    <span>Text</span>\n    <i class=\"fa fa-chevron-down\"></i>\n</div>\n<div class=\"select__dropdown\">\n    <ul class=\"select__list\">\n        <li class=\"select__item\">asdasd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n    </ul>\n</div>";
+  return "\n    <div class=\"select__input\" data-type=\"input\">\n    <span>Text</span>\n    <i class=\"fa fa-chevron-down\" data-type=\"arrow\"></i>\n</div>\n<div class=\"select__dropdown\">\n    <ul class=\"select__list\">\n        <li class=\"select__item\">asdasd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n    </ul>\n</div>";
 };
 
 var _render = new WeakSet();
@@ -179,11 +179,15 @@ var Select = /*#__PURE__*/function () {
     key: "open",
     value: function open() {
       this.$el.classList.add('open');
+      this.$arrow.classList.remove('fa-chevron-down');
+      this.$arrow.classList.add('fa-chevron-up');
     }
   }, {
     key: "close",
     value: function close() {
       this.$el.classList.remove('open');
+      this.$arrow.classList.add('fa-chevron-down');
+      this.$arrow.classList.remove('fa-chevron-up');
     }
   }, {
     key: "destroy",
@@ -205,6 +209,7 @@ function _render2() {
 function _setup2() {
   this.clickHandler = this.clickHandler.bind(this);
   this.$el.addEventListener('click', this.clickHandler);
+  this.$arrow = this.$el.querySelector('[data-type="arrow"]');
 }
 },{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
@@ -315,7 +320,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52275" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53821" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
