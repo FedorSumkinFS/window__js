@@ -139,13 +139,16 @@ var getTemplate = function getTemplate() {
   var selectedId = arguments.length > 2 ? arguments[2] : undefined;
   var text = placeholder !== null && placeholder !== void 0 ? placeholder : 'Placeholer as usual';
   var items = data.map(function (item) {
+    var cls = '';
+
     if (item.id === selectedId) {
       text = item.value;
+      cls = 'selected';
     }
 
-    return "\n        <li class=\"select__item\" data-type=\"item\" data-id=\"".concat(item.id, "\">").concat(item.value, "</li>\n        ");
+    return "\n        <li class=\"select__item ".concat(cls, "\" data-type=\"item\" data-id=\"").concat(item.id, "\">").concat(item.value, "</li>\n        ");
   });
-  return "\n    <div class=\"select__input\" data-type=\"input\">\n    <span data-type=\"value\">".concat(text, "</span>\n    <i class=\"fa fa-chevron-down\" data-type=\"arrow\"></i>\n</div>\n<div class=\"select__dropdown\">\n    <ul class=\"select__list\">\n    ").concat(items.join(''), "\n    </ul>\n</div>");
+  return "\n    <div class=\"select__backdrop\" data-type=\"backdrop\"></div>\n    <div class=\"select__input\" data-type=\"input\">\n    <span data-type=\"value\">".concat(text, "</span>\n    <i class=\"fa fa-chevron-down\" data-type=\"arrow\"></i>\n</div>\n<div class=\"select__dropdown\">\n    <ul class=\"select__list\">\n    ").concat(items.join(''), "\n    </ul>\n</div>");
 };
 
 var _render = new WeakSet();
@@ -179,6 +182,8 @@ var Select = /*#__PURE__*/function () {
       } else if (type === 'item') {
         var id = event.target.dataset.id;
         this.select(id);
+      } else if (type === 'backdrop') {
+        this.close();
       }
     }
   }, {
@@ -204,6 +209,7 @@ var Select = /*#__PURE__*/function () {
         el.classList.remove('selected');
       });
       this.$el.querySelector("[data-id=\"".concat(id, "\"]")).classList.add('selected');
+      this.options.onSelect ? this.options.onSelect(this.current) : null;
       this.close();
     }
   }, {
@@ -228,7 +234,8 @@ var Select = /*#__PURE__*/function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.$el.remove('click', this.clickHandler);
+      this.$el.removeEventListener('click', this.clickHandler);
+      this.$el.innerHTML = '';
     }
   }]);
 
@@ -351,7 +358,10 @@ var select = new _select.Select('#select', {
   }, {
     id: '6',
     value: 'Nest'
-  }]
+  }],
+  onSelect: function onSelect(item) {
+    console.log('Selected Item', item);
+  }
 }); // select.select('4')
 
 window.s = select;
