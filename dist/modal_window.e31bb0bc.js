@@ -134,7 +134,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
 var getTemplate = function getTemplate() {
-  return "\n    <div class=\"select__input\" data-type=\"input\">\n    <span>Text</span>\n    <i class=\"fa fa-chevron-down\" data-type=\"arrow\"></i>\n</div>\n<div class=\"select__dropdown\">\n    <ul class=\"select__list\">\n        <li class=\"select__item\">asdasd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n        <li class=\"select__item\">asd</li>\n    </ul>\n</div>";
+  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var placeholder = arguments.length > 1 ? arguments[1] : undefined;
+  var text = placeholder !== null && placeholder !== void 0 ? placeholder : 'Placeholer as usual';
+  var items = data.map(function (item) {
+    return "\n        <li class=\"select__item\" data-type=\"item\" data-id=\"".concat(item.id, "\">").concat(item.value, "</li>\n        ");
+  });
+  return "\n    <div class=\"select__input\" data-type=\"input\">\n    <span data-type=\"value\">".concat(text, "</span>\n    <i class=\"fa fa-chevron-down\" data-type=\"arrow\"></i>\n</div>\n<div class=\"select__dropdown\">\n    <ul class=\"select__list\">\n    ").concat(items.join(''), "\n    </ul>\n</div>");
 };
 
 var _render = new WeakSet();
@@ -150,6 +156,8 @@ var Select = /*#__PURE__*/function () {
     _render.add(this);
 
     this.$el = document.querySelector(selector);
+    this.options = options;
+    this.selectedId = null;
 
     _classPrivateMethodGet(this, _render, _render2).call(this);
 
@@ -163,12 +171,31 @@ var Select = /*#__PURE__*/function () {
 
       if (type === 'input') {
         this.toggle();
+      } else if (type === 'item') {
+        var id = event.target.dataset.id;
+        this.select(id);
       }
     }
   }, {
     key: "isOpen",
     get: function get() {
       return this.$el.classList.contains('open');
+    }
+  }, {
+    key: "current",
+    get: function get() {
+      var _this = this;
+
+      return this.options.data.find(function (item) {
+        return item.id === _this.selectedId;
+      });
+    }
+  }, {
+    key: "select",
+    value: function select(id) {
+      this.selectedId = id;
+      this.$value.textContent = this.current.value;
+      this.close();
     }
   }, {
     key: "toggle",
@@ -202,14 +229,18 @@ var Select = /*#__PURE__*/function () {
 exports.Select = Select;
 
 function _render2() {
+  var _this$options = this.options,
+      placeholder = _this$options.placeholder,
+      data = _this$options.data;
   this.$el.classList.add('select');
-  this.$el.innerHTML = getTemplate();
+  this.$el.innerHTML = getTemplate(data, placeholder);
 }
 
 function _setup2() {
   this.clickHandler = this.clickHandler.bind(this);
   this.$el.addEventListener('click', this.clickHandler);
   this.$arrow = this.$el.querySelector('[data-type="arrow"]');
+  this.$value = this.$el.querySelector('[data-type="value"]');
 }
 },{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
@@ -290,7 +321,29 @@ var _select = require("./select/select");
 
 require("./select/style.scss");
 
-var select = new _select.Select('#select', {});
+var select = new _select.Select('#select', {
+  placeholder: 'Choose any elements',
+  data: [{
+    id: '1',
+    value: 'React'
+  }, {
+    id: '2',
+    value: 'Angular'
+  }, {
+    id: '3',
+    value: 'React Native'
+  }, {
+    id: '4',
+    value: 'Vue'
+  }, {
+    id: '5',
+    value: 'Next'
+  }, {
+    id: '6',
+    value: 'Nest'
+  }]
+});
+select.select('4');
 window.s = select;
 },{"./select/select":"select/select.js","./select/style.scss":"select/style.scss"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
