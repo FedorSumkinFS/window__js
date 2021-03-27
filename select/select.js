@@ -1,7 +1,10 @@
-const getTemplate = (data = [], placeholder) => {
-    const text = placeholder ?? 'Placeholer as usual'
+const getTemplate = (data = [], placeholder, selectedId) => {
+    let text = placeholder ?? 'Placeholer as usual'
     
     const items = data.map(item => {
+        if (item.id === selectedId) {
+            text = item.value
+        }
         return `
         <li class="select__item" data-type="item" data-id="${item.id}">${item.value}</li>
         `
@@ -24,7 +27,7 @@ export class Select {
     constructor(selector, options) {
         this.$el = document.querySelector(selector)
         this.options = options
-        this.selectedId = null
+        this.selectedId = options.selectedId
 
         this.#render()
         this.#setup()
@@ -33,7 +36,7 @@ export class Select {
     #render() {
         const {placeholder, data} = this.options
         this.$el.classList.add('select')
-        this.$el.innerHTML = getTemplate(data, placeholder)
+        this.$el.innerHTML = getTemplate(data, placeholder, this.selectedId)
     }
 
     #setup() {
@@ -65,6 +68,11 @@ export class Select {
     select(id) {
         this.selectedId = id
         this.$value.textContent = this.current.value
+
+        this.$el.querySelectorAll('[data-type="item"]').forEach(el => {
+            el.classList.remove('selected')
+        })
+        this.$el.querySelector(`[data-id="${id}"]`).classList.add('selected')
         this.close()
     }
 

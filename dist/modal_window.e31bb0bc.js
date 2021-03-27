@@ -136,8 +136,13 @@ function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(
 var getTemplate = function getTemplate() {
   var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var placeholder = arguments.length > 1 ? arguments[1] : undefined;
+  var selectedId = arguments.length > 2 ? arguments[2] : undefined;
   var text = placeholder !== null && placeholder !== void 0 ? placeholder : 'Placeholer as usual';
   var items = data.map(function (item) {
+    if (item.id === selectedId) {
+      text = item.value;
+    }
+
     return "\n        <li class=\"select__item\" data-type=\"item\" data-id=\"".concat(item.id, "\">").concat(item.value, "</li>\n        ");
   });
   return "\n    <div class=\"select__input\" data-type=\"input\">\n    <span data-type=\"value\">".concat(text, "</span>\n    <i class=\"fa fa-chevron-down\" data-type=\"arrow\"></i>\n</div>\n<div class=\"select__dropdown\">\n    <ul class=\"select__list\">\n    ").concat(items.join(''), "\n    </ul>\n</div>");
@@ -157,7 +162,7 @@ var Select = /*#__PURE__*/function () {
 
     this.$el = document.querySelector(selector);
     this.options = options;
-    this.selectedId = null;
+    this.selectedId = options.selectedId;
 
     _classPrivateMethodGet(this, _render, _render2).call(this);
 
@@ -195,6 +200,10 @@ var Select = /*#__PURE__*/function () {
     value: function select(id) {
       this.selectedId = id;
       this.$value.textContent = this.current.value;
+      this.$el.querySelectorAll('[data-type="item"]').forEach(function (el) {
+        el.classList.remove('selected');
+      });
+      this.$el.querySelector("[data-id=\"".concat(id, "\"]")).classList.add('selected');
       this.close();
     }
   }, {
@@ -233,7 +242,7 @@ function _render2() {
       placeholder = _this$options.placeholder,
       data = _this$options.data;
   this.$el.classList.add('select');
-  this.$el.innerHTML = getTemplate(data, placeholder);
+  this.$el.innerHTML = getTemplate(data, placeholder, this.selectedId);
 }
 
 function _setup2() {
@@ -322,7 +331,8 @@ var _select = require("./select/select");
 require("./select/style.scss");
 
 var select = new _select.Select('#select', {
-  placeholder: 'Choose any elements',
+  placeholder: 'Выберите элемент',
+  selectedId: '3',
   data: [{
     id: '1',
     value: 'React'
@@ -342,8 +352,8 @@ var select = new _select.Select('#select', {
     id: '6',
     value: 'Nest'
   }]
-});
-select.select('4');
+}); // select.select('4')
+
 window.s = select;
 },{"./select/select":"select/select.js","./select/style.scss":"select/style.scss"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];

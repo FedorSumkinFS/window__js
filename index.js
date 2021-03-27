@@ -2,7 +2,8 @@ import {Select} from './select/select'
 import './select/style.scss'
 
 const select = new Select('#select', {
-    placeholder: 'Choose any elements',
+    placeholder: 'Выберите элемент',
+    selectedId: '3',
     data: [
     {id: '1', value: 'React'},
     {id: '2', value: 'Angular'},
@@ -14,5 +15,5 @@ const select = new Select('#select', {
 })
 
 
-select.select('4')
+// select.select('4')
 window.s = select
